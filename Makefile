@@ -263,4 +263,13 @@ check-links:
 	docker build -t check-links scripts/docs/check-links
 	docker run --rm -v $(CURDIR):/usr/src/signalfx-agent:ro check-links
 
+.PHONY: gosec-scan
+gosec-scan:
+	mkdir -p test_output
+	docker run --rm \
+		-v $(CURDIR):/usr/src/signalfx-agent \
+		-w /usr/src/signalfx-agent \
+		securego/gosec:2.0.0 \
+			-severity high internal/...
+
 FORCE:
